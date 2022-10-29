@@ -1,0 +1,68 @@
+==============================
+=       NC 808 - SPECS       =
+==============================
+
+=== OVERVIEW  ===
+* Minicomputer designed to be implemented with TTL
+* 8-bit data width
+* Device communication via dedicated I/O instructions
+
+=== INSTRUCTIONS ===
+0: NOP  reg, imm8/reg   -> reg = imm8/reg        (no operation)
+1: LDA  [imm16]         -> HL = imm16            (load into A register)
+2: ADDˆ reg, imm8/reg   -> reg = reg + imm8/reg  (addition)
+3: SUBˆ reg, imm8/reg   -> reg = reg - imm8/reg  (subtraction)
+4: STA  reg, [imm16/HL] -> reg = [HL/imm16]      (store into memory, HL)
+5: LDI  reg, imm8/reg   -> reg = imm8/reg        (load immediate, into register A)
+6: JMPˆ [imm16]         -> PC = imm16            (jump, unconditional)
+7:
+8:
+9:
+A:
+B:
+C:
+D: INP  reg, [imm16]    -> reg = [imm16]         (input, read from I/O)
+E: OUTˆ reg, imm8/reg   -> [imm8/reg] = reg      (output, outputs to I/O)
+F: HLT  -               -> halt                  (halt, stop execution)
+
+^ these instructions load the (F)lags register
+
+// TODO: add more instructions
+// Seriously thinking about adding a set of logical operations into the instructions
+
+=== REGISTERS ===
+A (0): GP register  >> ACCUMULATOR
+B (1): GP register
+C (2): GP register
+F (7): flags (LSB to MSB)
+    LESS
+    EQUAL
+    CARRY
+    BORROW
+
+* Calling convention
+    * A, B, C, D, Z for arguments
+      * Use 16-bit pairs AB and CD if arguments are 16-bits wide
+      * Skip register if necessary to pair registers together into 16 bits
+    * Remaining arguments pushed to stack in order
+    * Return value in Z
+
+=== MEMORY LAYOUT ===
+// TODO: add memory layout
+
+=== MEMORY BANKING ===
+// Seriously considering adding memory banking to reduce the amount of logic and circuits required to implement the CPU
+
+=== PORTS ===
+PORTS are used to communicate with devices or by the CPU itself.
+
+0x00: CLOCK (? perhaps a good idea to add this to comunicate with peripherals)
+0x01: STATUS
+    0x00: CPU status
+        0x00: CPU is halted
+        0x01: CPU is running
+    0x01: CPU mode
+        0x00: 8-bit mode (default)
+        0x01: 16-bit mode (? not entirely sure if this is necessary)
+0x02: INTERRUPT (? perhaps a good idea to add this to comunicate with peripherals)
+
