@@ -17,6 +17,10 @@ int openFile(char* filename) {
     using namespace std;
     ifstream asm_file; asm_file.open(filename);
 
+    !asm_file.is_open() ? 
+        cout << "Error: Could not open file " << filename << endl : 
+        cout << "Opened file " << filename << "\n" << endl;
+
     if(asm_file.is_open()) {
         string line;
         while (getline(asm_file, line)) {
