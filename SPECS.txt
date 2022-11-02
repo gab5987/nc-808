@@ -7,45 +7,59 @@
 * 8-bit data width
 * Device communication via dedicated I/O instructions
 
+
 === INSTRUCTIONS ===
-0: NOP  reg, imm8/reg   -> reg = imm8/reg        (no operation)
-1: LDA  [imm16]         -> HL = imm16            (load into A register)
-2: ADDˆ reg, imm8/reg   -> reg = reg + imm8/reg  (addition)
-3: SUBˆ reg, imm8/reg   -> reg = reg - imm8/reg  (subtraction)
-4: STA  reg, [imm16/HL] -> reg = [HL/imm16]      (store into memory, HL)
-5: LDI  reg, imm8/reg   -> reg = imm8/reg        (load immediate, into register A)
-6: JMPˆ [imm16]         -> PC = imm16            (jump, unconditional)
+0: NOP  -               -> nop                     (no operation)
+1: LD   [imm4], [imm4]  -> [reg/imm4] = [reg/imm4] (load value into a register)
+2: ADDˆ -,              -> acc = acc + rb          (addition)
+3: SUBˆ -,              -> acc = acc - rb          (subtraction)
+4: STA  [imm4], [imm8]  -> [mem/imm8] = [reg/imm4] (store into memory, HL)
+5: LDI  [imm8], [imm4]  -> [reg/imm4] = [imm8]     (load immediate, into some register)
+6: JMP  [imm8]          -> PC = imm8               (jump, unconditional)
 7:
 8:
 9:
 A:
 B:
 C:
-D: INP  reg, [imm16]    -> reg = [imm16]         (input, read from I/O)
-E: OUTˆ reg, imm8/reg   -> [imm8/reg] = reg      (output, outputs to I/O)
-F: HLT  -               -> halt                  (halt, stop execution)
+D: INP  [imm4], [imm4]  -> [reg/imm4] = [IO/imm4]  (input, read from I/O)
+E: OUT  [imm4], [imm4]  -> [IO/imm4] = [reg/imm4]  (output, outputs to I/O)
+F: HLT  -               -> halt                    (halt, stop execution)
 
 ^ these instructions load the (F)lags register
 
-// TODO: add more instructions
-// Seriously thinking about adding a set of logical operations into the instructions
+
++++ INSTRUCTIONS EXPLANATION +++
+
+0: NOP  -> Basically does nothing but increment the Program Counter.
+1: LD   -> Copies a value stored in a register to another register.
+2: ADDˆ -> Takes the value of ACC, sums it with RB and then store the result into ACC.
+3: SUBˆ -> Takes the value of ACC, substract it with RB and then store the result into ACC.
+4: STA  -> Takes the value of a register and store into a specific location in memory.
+5: LDI  -> Loads an immediate into a register.
+6: JMP  -> Jump to a specific location in memory.
+7: 
+8: 
+9: 
+A: 
+B: 
+C: 
+D: INP  -> Reads from I/O and stores into a register.
+E: OUT  -> Outputs a value from a register into I/O.
+F: HLT  -> Halts the clock.
+
+
+
 
 === REGISTERS ===
 A (0): GP register  >> ACCUMULATOR
 B (1): GP register
 C (2): GP register
 F (7): flags (LSB to MSB)
-    LESS
-    EQUAL
+    ZERO
     CARRY
-    BORROW
 
-* Calling convention
-    * A, B, C, D, Z for arguments
-      * Use 16-bit pairs AB and CD if arguments are 16-bits wide
-      * Skip register if necessary to pair registers together into 16 bits
-    * Remaining arguments pushed to stack in order
-    * Return value in Z
+
 
 === MEMORY LAYOUT ===
 // TODO: add memory layout
