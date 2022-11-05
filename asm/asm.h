@@ -15,6 +15,7 @@ static class Tokenizer {
         char* filename;
     public:
         void tokenize(std::string* line);
+        void printTokens();
 } Tokenizer;
 
 #endif
