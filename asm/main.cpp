@@ -16,6 +16,9 @@ int main(int argc, char** argv) {
     // open the file and send it to the tokenizer
     openFile(argv[1]);
 
+    std::cout << "\n" << std::endl;
+    Parser.tokens = tokens; // set the tokens vector in the parser to the tokens vector in the tokenizer
+    Parser.parse(); // parse the tokens
     return 0;
 }
 
