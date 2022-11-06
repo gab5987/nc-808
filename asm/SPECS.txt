@@ -1,0 +1,49 @@
+====================================================
+=       NC 808 archtecture assembler - SPECS       =
+====================================================
+
+=== OVERVIEW  ===
+* Assembler for the NC 808 architecture
+* Written in C++
+
+=== FEATURES ===
+* Assembles NC 808 assembly code into machine code                            // 
+* Supports all instructions and directives                                    // 
+* Supports all addressing modes (except for the PC relative addressing mode)  // 
+* Supports labels and constants                                               // 
+* Supports comments (# and ;)                                                 // DONE
+* Supports macros (with parameters)                                           // 
+* Supports conditional assembly (if, else, endif)                             // 
+* Supports multiple files (with #include)                                     // 
+* Supports multiple output formats (binary, hex, decimal)                     // 
+* Supports multiple output files (one per input file)                         // 
+* Supports multiple input files (with -o option)                              // 
+
+=== USAGE FORMAT ===
+* nc808asm [options] [input files]
+
+=== OPTIONS ===
+* -o <file>   : Specify output file
+* -f <format> : Specify output format (bin, hex, dec)
+* -l          : List all labels
+* -m          : List all macros
+* -i          : List all instructions
+* -d          : List all directives
+* -h          : Display help
+
+=== NOTES ===
+* The assembler will generate an output file for each input file
+* The output file will have the same name as the input file, but with the
+  extension .bin, .hex or .dec, depending on the output format
+
+=== BUILD FILES ===
+* Header files
+    * asm.h : Store global classes and functions
+    * opcodes.h : Contains all opcodes and their corresponding mnemonics
+    * directives.h : Contains all directives and their corresponding mnemonics
+* C++ files
+    * main.cpp : Main source file
+    * tokenizer.cpp : Tokenizer functions, used to split the input file into tokens
+    * parser.cpp : Parser functions, used to parse the tokens into instructions and build a symbol table(syntax tree)
+    * assembler.cpp : Assembler functions, used to assemble the instructions into machine code
+    * output.cpp : Output functions, used to output the machine code into a file

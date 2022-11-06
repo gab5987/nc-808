@@ -1,0 +1,10 @@
+===================================================
+=       NC 808 archtecture emulator - SPECS       =
+===================================================
+
+* Emulator for the NC 808 architecture
+
+=== FEATURES ===
+* Emulates the NC 808 architecture from a base binary code
+
+OTHER INFO : YET TO BE ADDED
