@@ -1,0 +1,17 @@
+
+# System dependent files
+*thumbs.db
+*.DS_Store
+*.swp
+*desktop.ini
+
+# IDE files
+*.iml
+.idea
+*.ipr
+*.iws
+*.vscode
+
+# Debugging files
+*.log
+*.out
