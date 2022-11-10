@@ -25,7 +25,17 @@ static class Parser {
         int parse();
 
         // methods to parse each instruction
+        void _asmNOP(int* iterator);
+        void _asmLOAD(int* iterator);
         void _asmADD(int* iterator);
+        void _asmSUB(int* iterator);
+        void _asmSTA(int* iterator);
+        void _asmLDI(int* iterator);
+        void _asmJMP(int* iterator);
+
+        void _asmIN(int* iterator);
+        void _asmOUT(int* iterator);
+        void _asmHLT(int* iterator);
 } Parser;
 
 #endif
