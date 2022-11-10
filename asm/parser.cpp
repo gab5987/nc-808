@@ -13,11 +13,28 @@ unsigned int stackPointer = 0; // stack pointer, stores the current memory locat
 int Parser::parse() {
     using namespace std;
     int iterator = 0;
+
+    void search_for_tokens() {
+        if (tokens[iterator] == "nop" || tokens[iterator] == "NOP") _asmNOP(&iterator);
+        else if (tokens[iterator] == "ld" || tokens[iterator] == "LD") _asmLOAD(&iterator);
+        else if (tokens[iterator] == "add" || tokens[iterator] == "ADD") _asmADD(&iterator);
+        else if (tokens[iterator] == "sub" || tokens[iterator] == "SUB") _asmSUB(&iterator);
+        else if (tokens[iterator] == "sta" || tokens[iterator] == "STA") _asmSTA(&iterator);
+        else if (tokens[iterator] == "ldi" || tokens[iterator] == "LDI") _asmLDI(&iterator);
+        else if (tokens[iterator] == "jmp" || tokens[iterator] == "JMP") _asmJMP(&iterator);
+        else if (tokens[iterator] == "in" || tokens[iterator] == "IN") _asmIN(&iterator);
+        else if (tokens[iterator] == "out" || tokens[iterator] == "OUT") _asmOUT(&iterator);
+        else if (tokens[iterator] == "hlt" || tokens[iterator] == "HLT") _asmHLT(&iterator);
+        else {
+            cout << "Error: Invalid instruction at line " << Tokenizer.line << endl;
+            exit(1);
+        }
+    }
+
     while (iterator < tokens.size()) {
 
-        if (tokens[iterator] == "add" || tokens[iterator] == "ADD") _asmADD(&iterator);
-        if (tokens[iterator] == "nop" || tokens[iterator] == "NOP") _asmNOP(&iterator);
-        if (tokens[iterator] == "ld"  || tokens[iterator] == "LD")  _asmLOAD(&iterator);
+        
+
         // else {
         //     cout << "Error: Unexpected token " << tokens[iterator] << endl;
         //     return 1;
@@ -34,6 +51,12 @@ int Parser::parse() {
 
 // Methods for each instruction
 
+void set_operands(int* iterator) { // set the operands for the current instruction
+    using namespace std;
+    logicTree[stackPointer][1] = stoul(tokens[*iterator + 1], nullptr, 0); // set operand 1 to the value of the next token
+    logicTree[stackPointer][2] = stoul(tokens[*iterator + 2], nullptr, 0); // set operand 2 to the value of the token after that
+}
+
 void Parser::_asmNOP(int* iterator) { // nop opcode handler
     logicTree[stackPointer][0] = OP_NOP; // set opcode to NOP
     for(auto i = 1 ; i < 3 ; i++) logicTree[stackPointer][i] = 0x00; // set the operands to 0
@@ -42,10 +65,8 @@ void Parser::_asmNOP(int* iterator) { // nop opcode handler
 }
 
 void Parser::_asmLOAD(int* iterator) { // load opcode handler
-    using namespace std;
     logicTree[stackPointer][0] = OP_LOAD; // set opcode to LOAD
-    logicTree[stackPointer][1] = stoul(tokens[*iterator + 1], nullptr, 0); // set operand 1 to the value of the next token
-    logicTree[stackPointer][2] = stoul(tokens[*iterator + 2], nullptr, 0); // set operand 2 to the value of the token after that
+    set_operands(iterator); // set the operands
 
     INCREMENT_STACK; // increment the stack pointer and iterator by 2
 }
@@ -65,28 +86,22 @@ void Parser::_asmSUB(int* iterator) { // sub opcode handler
 }
 
 void Parser::_asmSTA(int* iterator) { // sta opcode handler
-    using namespace std;
     logicTree[stackPointer][0] = OP_STA; // set the opcode to sta
-    logicTree[stackPointer][1] = stoul(tokens[*iterator + 1], nullptr, 0); // set operand 1 to the value of the next token
-    logicTree[stackPointer][2] = stoul(tokens[*iterator + 2], nullptr, 0); // set operand 2 to the value of the token after that
+    set_operands(iterator); // set the operands
     
     INCREMENT_STACK; // increment the stack pointer and iterator by 2
 }
 
 void Parser::_asmLDI(int* iterator) { // ldi opcode handler
-    using namespace std;
     logicTree[stackPointer][0] = OP_LDI; // set the opcode to ldi
-    logicTree[stackPointer][1] = stoul(tokens[*iterator + 1], nullptr, 0); // set operand 1 to the value of the next token
-    logicTree[stackPointer][2] = stoul(tokens[*iterator + 2], nullptr, 0); // set operand 2 to the value of the token after that
+    set_operands(iterator); // set the operands
     
     INCREMENT_STACK; // increment the stack pointer and iterator by 2
 }
 
 void Parser::_asmJMP(int* iterator) { // jmp opcode handler
-    using namespace std;
     logicTree[stackPointer][0] = OP_JMP; // set the opcode to jmp
-    logicTree[stackPointer][1] = stoul(tokens[*iterator + 1], nullptr, 0); // set operand 1 to the value of the next token
-    logicTree[stackPointer][2] = stoul(tokens[*iterator + 2], nullptr, 0); // set operand 2 to the value of the token after that
+    set_operands(iterator); // set the operands
     
     INCREMENT_STACK; // increment the stack pointer and iterator by 2
 }

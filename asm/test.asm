@@ -1,5 +1,5 @@
 ; Test code for nc-808
-; Basically how the sintax will work
+; Basically how the sintax will look like
 
 ; This is a comment
 # Comments are also allowed with the # symbol
@@ -9,7 +9,7 @@
 ; macros are defined with the @macro keyword
 ; multiline macros are (still) not allowed because it wouldnt make any sense(thats why the methods exists)
 
-$myVar 0x00 ; this is how a variable will look like
+$var myVar 0x00 ; this is how a variable will look like
 
 ; Variables are global by default, its value will acctually be pointing... 
 ; ...to the memory address of the variable, so you can use it as a pointer too
