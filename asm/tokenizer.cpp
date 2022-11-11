@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <bits/stdc++.h>
+#include <sstream>
+
 
 #include "asm.h"
 #include "opcodes.h"
