@@ -5,6 +5,7 @@
 
 This repository contains the source code files for the assembler and emulator for a cpu archtecture im designing.
 
+[View interactive Diagram](https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=gab5987%2Fnc-808)
 
 
 
