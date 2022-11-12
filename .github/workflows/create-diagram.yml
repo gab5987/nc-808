@@ -1,0 +1,5 @@
+- name: Checkout
+  uses: actions/checkout@v2.5.0
+
+- name: Repo Visualizer
+  uses: githubocto/repo-visualizer@0.8.2
