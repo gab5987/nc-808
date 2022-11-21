@@ -36,9 +36,45 @@ int register_or_call_macros(int* iterator) {
     return 0;
 }
 
+class Variable { // base class to create a new variable
+    public:
+        std::string name;
+        int value;
+        Variable(std::string newName, u_int8_t newValue) {
+            name = '$' + newName;
+            value = newValue;
+        }
+};
+
+std::vector<Variable> variables; // vector of variables
+#define CONTINUE iterator ++; continue;
+
+// register new variables into its vector
+int register_variables() {
+    u_int iterator = 0;
+
+    while(tokens.size()) {
+        const char* buffer = tokens[iterator].c_str();
+
+        if(buffer[0] == '$') {
+            for(auto i = 0 ; i < variables.size() ; i++) variables[i].name == tokens[iterator] && CONTINUE;
+            
+            std::string name = tokens[iterator]; 
+            int value = std::stoul(tokens[iterator + 1], nullptr, 0);
+            Variable newVariable(name, value);
+            variables.push_back(newVariable);
+            stackPointer++;
+            iterator += 2;
+        }
+        else CONTINUE;
+    }
+}
+
 int Parser::parse() {
     using namespace std;
     int iterator = 0;
+
+    register_variables();
 
     while (iterator < tokens.size()) {
         iterator += register_or_call_macros(&iterator);
@@ -68,6 +104,7 @@ int Parser::parse() {
             }
         }
     }
+    for(auto i = 0 ; i < variables.size() ; i++) cout << variables[i].name << " " << variables[i].value << endl;
     cout << "Finished!\nHere's the generated bin code:\n" << endl;
     // prints out the finished program
     for(auto j = 0 ; j < stackPointer ; j++) {
