@@ -5,13 +5,21 @@
 #include "asm.h"
 #include "opcodes.h"
 
-int main(int argc, char** argv) {
+bool verbose = false;
+
+int main(int argc, char* argv[]) {
 
     // check if the user provided a filename, if not, exit
-    if (argc != 2) {
-        std::cout << "Usage: " << argv[0] << " <filename>" << std::endl;
+    if (argc < 2) {
+        std::cout << "Usage: " << argv[0] << " <filename> <options>" << std::endl;
         return 1;
     }
+
+    for(auto i = 1 ; i <= argc ; i++) {
+        if(argv[i] == "-v" || argv[i] == "--verbose") verbose = true;
+    }
+
+    std::cout << verbose << std::endl;
 
     // open the file and send it to the tokenizer
     openFile(argv[1]);
