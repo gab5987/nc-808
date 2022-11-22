@@ -1,16 +1,23 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
+#include <typeinfo>
 #include "asm.h"
 #include "opcodes.h"
 
-int main(int argc, char** argv) {
+// global variables to hold options
+bool verbose = false;
+
+int main(int argc, char* argv[]) {
 
     // check if the user provided a filename, if not, exit
-    if (argc != 2) {
-        std::cout << "Usage: " << argv[0] << " <filename>" << std::endl;
+    if (argc < 2) {
+        std::cout << "Usage: " << argv[0] << " <filename> <options>" << std::endl;
         return 1;
+    }
+
+    for(auto i = 0 ; i < argc ; i++) {
+        if(!std::strcmp(argv[i], "-v") || !std::strcmp(argv[i], "--verbose")) verbose = true;
     }
 
     // open the file and send it to the tokenizer
@@ -25,7 +32,7 @@ int main(int argc, char** argv) {
 int openFile(char* filename) {
     using namespace std;
     ifstream asm_file; asm_file.open(filename); // opens the file
-
+    
     // check if the file was successfully opened, if not, throws a error and exit
     !asm_file.is_open() ? 
         cout << "Error: Could not open file " << filename << endl : 
@@ -34,11 +41,14 @@ int openFile(char* filename) {
     // read the file line by line and send it to the tokenizer
     if(asm_file.is_open()) {
         string buffer;
-        while(getline(asm_file, buffer)){
+        while(getline(asm_file, buffer)) {
+            Tokenizer.line++;
+            verbose && cout << "Tokenizing line " << Tokenizer.line << ": " << buffer << endl;
+
             Tokenizer.tokenize(&buffer);
         }
-        asm_file.close();
+        asm_file.close(); verbose && cout << "Closed file " << filename << "\n" << endl;
     }
-    Tokenizer.printTokens(); // print the tokens array - FOR DEBUGGING PURPOSES, REMOVE LATER!
+    // Tokenizer.printTokens(); // print the tokens array - FOR DEBUGGING PURPOSES, REMOVE LATER!
     return 0;
 }
