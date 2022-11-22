@@ -1,10 +1,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
+#include <typeinfo>
 #include "asm.h"
 #include "opcodes.h"
 
+// global variables to hold options
 bool verbose = false;
 
 int main(int argc, char* argv[]) {
@@ -15,8 +16,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    for(auto i = 1 ; i <= argc ; i++) {
-        if(argv[i] == "-v" || argv[i] == "--verbose") verbose = true;
+    for(auto i = 0 ; i < argc ; i++) {
+        if(!std::strcmp(argv[i], "-v") || !std::strcmp(argv[i], "--verbose")) verbose = true;
     }
 
     std::cout << verbose << std::endl;

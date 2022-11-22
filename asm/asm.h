@@ -7,6 +7,8 @@ int openFile(char* filename); // function to open a file and send it to the toke
 
 extern std::vector<std::string> tokens;
 
+extern bool verbose;
+
 static class Tokenizer {
     public:
         int line;           // counts the number of lines in the file
