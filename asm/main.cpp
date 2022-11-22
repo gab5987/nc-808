@@ -20,8 +20,6 @@ int main(int argc, char* argv[]) {
         if(!std::strcmp(argv[i], "-v") || !std::strcmp(argv[i], "--verbose")) verbose = true;
     }
 
-    std::cout << verbose << std::endl;
-
     // open the file and send it to the tokenizer
     openFile(argv[1]);
 
@@ -34,7 +32,7 @@ int main(int argc, char* argv[]) {
 int openFile(char* filename) {
     using namespace std;
     ifstream asm_file; asm_file.open(filename); // opens the file
-
+    
     // check if the file was successfully opened, if not, throws a error and exit
     !asm_file.is_open() ? 
         cout << "Error: Could not open file " << filename << endl : 
@@ -43,11 +41,14 @@ int openFile(char* filename) {
     // read the file line by line and send it to the tokenizer
     if(asm_file.is_open()) {
         string buffer;
-        while(getline(asm_file, buffer)){
+        while(getline(asm_file, buffer)) {
+            Tokenizer.line++;
+            verbose && cout << "Tokenizing line " << Tokenizer.line << ": " << buffer << endl;
+
             Tokenizer.tokenize(&buffer);
         }
-        asm_file.close();
+        asm_file.close(); verbose && cout << "Closed file " << filename << "\n" << endl;
     }
-    Tokenizer.printTokens(); // print the tokens array - FOR DEBUGGING PURPOSES, REMOVE LATER!
+    // Tokenizer.printTokens(); // print the tokens array - FOR DEBUGGING PURPOSES, REMOVE LATER!
     return 0;
 }

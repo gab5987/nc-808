@@ -30,6 +30,14 @@ int register_or_call_macros(int* iterator) {
 
         Macros newMacro(name, op);
         macros.push_back(newMacro);
+
+        verbose && std::cout << "Found macro declaration at line " << stackPointer << std::endl;
+        verbose && std::cout << "Registered macro " << name 
+                            << " with opcode " << op[0] 
+                            << " and operands " << op[1] 
+                            << " and " << op[2] 
+                            << std::endl << "\n";
+
         stackPointer++;
         return 5;
     }
@@ -74,7 +82,7 @@ int Parser::parse() {
     using namespace std;
     int iterator = 0;
 
-    register_variables();
+    // register_variables();
 
     while (iterator < tokens.size()) {
         iterator += register_or_call_macros(&iterator);
@@ -83,6 +91,7 @@ int Parser::parse() {
         // check if the token is a macro, if so, replace it with the macro's operation
         for(auto i = 0 ; i < macros.size() ; i++) {
             if(std::strcmp(tokens[iterator].c_str(), macros[i].name.c_str()) == 0) {
+                verbose && cout << "Macro call: " << macros[i].name << " at line " << stackPointer << "\n" << endl;
                 for(auto j = 0 ; j < 3 ; j++) logicTree[stackPointer][j] = macros[i].operation[j];
                 stackPointer++; iterator += 3;
             }
@@ -104,16 +113,21 @@ int Parser::parse() {
             }
         }
     }
+
+    cout << "Finished!\n" << endl;
+
     for(auto i = 0 ; i < variables.size() ; i++) cout << variables[i].name << " " << variables[i].value << endl;
-    cout << "Finished!\nHere's the generated bin code:\n" << endl;
-    // prints out the finished program
-    for(auto j = 0 ; j < stackPointer ; j++) {
-        cout << 
-            bitset<8>(j) << " " <<               // memory location
-            bitset<8>(logicTree[j][0]) << " " << // opcode
-            bitset<8>(logicTree[j][1]) << " " << // operand 1
-            bitset<8>(logicTree[j][2])           // operand 2
-            << endl;
+    if(verbose) {
+        cout << "Here's the generated bin code:\n" << endl;
+        // prints out the finished program
+        for(auto j = 0 ; j < stackPointer ; j++) {
+            cout << 
+                bitset<8>(j) << " " <<               // memory location
+                bitset<8>(logicTree[j][0]) << " " << // opcode
+                bitset<8>(logicTree[j][1]) << " " << // operand 1
+                bitset<8>(logicTree[j][2])           // operand 2
+                << endl;
+        }
     }
     return 0;
 }
